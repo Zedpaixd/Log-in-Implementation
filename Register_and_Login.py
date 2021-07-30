@@ -60,6 +60,39 @@ def Decrypt(toDecrypt):
 
 
 
+def similarityCheck(string1, string2):
+
+    size1 = len(string1)
+    size2 = len(string2)
+
+    dp = [[0 for x in range(size2 + 1)] for x in range(size1 + 1)]
+
+    for i in range(size1 + 1):
+
+        for j in range(size2 + 1):
+ 
+
+            if i == 0:
+                dp[i][j] = j   
+ 
+            elif j == 0:
+                dp[i][j] = i   
+ 
+
+            elif string1[i-1] == string2[j-1]:
+                dp[i][j] = dp[i-1][j-1]
+ 
+
+            else:
+                dp[i][j] = 1 + min(dp[i][j-1],      
+                                   dp[i-1][j],      
+                                   dp[i-1][j-1])    
+ 
+    return dp[size1][size2]
+
+
+
+
 
 def Register():
     pass
@@ -114,5 +147,10 @@ while (access != True):
         if (access == False):
             clear()
             print ("Something you have entered is incorrect")
+            sleep(2)
+            clear()
+
+        else:
+            print("Access Granted")
             sleep(2)
             clear()
