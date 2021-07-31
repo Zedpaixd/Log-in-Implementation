@@ -93,26 +93,65 @@ def similarityCheck(string1, string2):
 
 
 
+def addToDatabase(username,password):
+    print("WIP")
+    sleep(5)
+
+
+
+
+
 
 def Register():
-    pass
 
+    # Handling username input
 
+    usernameInput = "a"
 
+    while (len(usernameInput) <= 4 or Encrypt(usernameInput) in usernames):
 
+        clear()
+        print("For your username, please make sure that:\n- Your username is longer than 4 characters\n- It has not been used before by anyone else\n")
+        usernameInput = input("Input your username:")
+        if (len(usernameInput) <= 4 or Encrypt(usernameInput) in usernames):
+            print("Invalid username.")
+            sleep(2)
 
+    #Handling password input
+
+    passwordInput = "a"
+    inUsername = False
+
+    while ((len(passwordInput) < 4) or (similarityCheck(passwordInput,usernameInput) <= (len(passwordInput)/2)) or (inUsername == True)):
+        inUsername = False
+
+        clear()
+        print("Your username is: {}".format(usernameInput))
+        print("For your passsword, please make sure the following criterias are met:\n- Your password must be longer than 4 characters\n- Your password must not be too similar to your username\n- Your password must not appear in your username\n")
+        passwordInput = input("Input your password:")
+
+        tempPasswordInput = passwordInput
+        
+        while len(tempPasswordInput) > len(passwordInput)/2:
+            tempPasswordInput = tempPasswordInput[:len(tempPasswordInput)-1:]
+            if (tempPasswordInput.lower() in usernameInput.lower()):
+                inUsername = True
+
+        if (len(usernameInput) < 4) or (similarityCheck(passwordInput,usernameInput) <= (len(passwordInput)/2) or (inUsername == True)):
+            print("Unfitting password.")
+            sleep(2)
+    clear()
+    addToDatabase(usernameInput,passwordInput)
 
 
 def LogIn():
 
     access = False
 
-    print ("Username?")
-    usernameInput = input()
+    usernameInput = input("Input your username: ")
     clear()
 
-    print ("Password?")
-    passwordInput = input()
+    passwordInput = input("Input your password: ")
     clear()
 
     if (Encrypt(usernameInput) in usernames):
@@ -133,13 +172,14 @@ access = False
 
 while (access != True):
 
+    clear()
     #Temporary, will use actual UI later
-    print("1 - register \n2- log in")
+    print("1 - register \n2 - log in")
 
     userInput = input()
     clear()
 
-    if (userInput == 1):
+    if (userInput == str(1)):
         Register()
 
     else:
