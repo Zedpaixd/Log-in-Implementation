@@ -2,8 +2,16 @@ from os import system, name
 from time import sleep
 
 
+# TODO:
+# - Tkinter UI
+# - Json DB
+# - More password requirements, such as 1 special character
 
 
+
+
+
+# Defining a temporary clear screen for the console variant of the program
 
 def clear():
 
@@ -39,7 +47,7 @@ with open("accounts.txt","r") as AccountList:
 
 
 
-
+# Budget encrypt function
 
 def Encrypt(toEncrypt):
     toEncrypt = toEncrypt[::-1]
@@ -49,7 +57,7 @@ def Encrypt(toEncrypt):
 
 
 
-
+# Budget decrypt function
 
 def Decrypt(toDecrypt):
     toDecrypt=toDecrypt[::-1]
@@ -58,7 +66,7 @@ def Decrypt(toDecrypt):
 
 
 
-
+# Similarity check using dynamic programming and a memoization table
 
 def similarityCheck(string1, string2):
 
@@ -92,21 +100,24 @@ def similarityCheck(string1, string2):
 
 
 
+# Function to add the account to the database. Currently a .txt, to-do: json
 
 def addToDatabase(username,password):
+
     encryptedUsername = Encrypt(username)
     encryptedPassword = Encrypt(password)
+
     with open("accounts.txt","a") as AccountList:
         print("\n{} | {}".format(encryptedUsername,encryptedPassword), file=AccountList)
 
 
 
 
-
+# Function handling the registration process
 
 def Register():
 
-    # Handling username input
+    # Handling username input and if it abides by the requirements of a username
 
     usernameInput = "a"
 
@@ -119,7 +130,7 @@ def Register():
             print("Invalid username.")
             sleep(2)
 
-    #Handling password input
+    # Handling password input and making sure it fits the mandatory criterias
 
     passwordInput = "a"
     inUsername = False
@@ -142,9 +153,13 @@ def Register():
         if (len(usernameInput) < 4) or (similarityCheck(passwordInput,usernameInput) <= (len(passwordInput)/2) or (inUsername == True)):
             print("Unfitting password.")
             sleep(2)
+
     clear()
     addToDatabase(usernameInput,passwordInput)
 
+
+
+# Function handling the log in process
 
 def LogIn():
 
@@ -168,15 +183,16 @@ def LogIn():
 
 
 
-
+# The "main" of the program
 
 access = False
 
 while (access != True):
 
     clear()
-    #Temporary, will use actual UI later
-    print("1 - register \n2 - log in")
+
+    
+    print("1 - register \n2 - log in") #Temporary, will use actual UI later via tkinter
 
     userInput = input()
     clear()
