@@ -94,8 +94,10 @@ def similarityCheck(string1, string2):
 
 
 def addToDatabase(username,password):
-    print("WIP")
-    sleep(5)
+    encryptedUsername = Encrypt(username)
+    encryptedPassword = Encrypt(password)
+    with open("accounts.txt","a") as AccountList:
+        print("\n{} | {}".format(encryptedUsername,encryptedPassword), file=AccountList)
 
 
 
