@@ -1,10 +1,10 @@
 from os import system, name
 from time import sleep
-
+import json
+from datetime import date
 
 # TODO:
 # - Tkinter UI
-# - Json DB
 # - More password requirements, such as 1 special character
 
 
@@ -30,18 +30,16 @@ def clear():
 usernames = []
 passwords = []
 
-with open("accounts.txt","r") as AccountList:
+with open('database.json', 'r') as users:
 
-    temp = AccountList.readlines()
+    userAccounts = json.load(users)
 
-    for i in range(0,len(temp)):
+usernames = []
+passwords = []
 
-        if (i != len(temp)-1):
-            temp[i] = temp[i][:-1]
-
-        tempSplit = temp[i].split(" | ")
-        usernames.append(tempSplit[0])
-        passwords.append(tempSplit[1])
+for account in userAccounts['users']:
+    usernames.append(account['username'])
+    passwords.append(account['password'])
 
 
 
@@ -107,8 +105,19 @@ def addToDatabase(username,password):
     encryptedUsername = Encrypt(username)
     encryptedPassword = Encrypt(password)
 
-    with open("accounts.txt","a") as AccountList:
-        print("\n{} | {}".format(encryptedUsername,encryptedPassword), file=AccountList)
+    tempAccount = {
+    "username":encryptedUsername,
+    "password":encryptedPassword,
+    "creation_date":date.today().strftime("%d/%m/%Y")
+    }
+    
+    userAccounts['users'].append(tempAccount)
+
+
+    with open('database.json', 'w') as users:
+
+        json.dump(userAccounts, users, indent=2)
+
 
 
 
