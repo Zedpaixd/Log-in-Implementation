@@ -1,0 +1,24 @@
+{
+  "users": [
+    {
+      "username": "Yo",
+      "password": "Bro",
+      "creation_date": "dd.mm.yyyy"
+    },
+    {
+      "username": "Hello",
+      "password": "There",
+      "creation_date": "dd.mm.yyyy"
+    },
+    {
+      "username": "Testing",
+      "password": "Lmaoooo",
+      "creation_date": "02/08/2021"
+    },
+    {
+      "username": "ooyeH",
+      "password": "yetaM",
+      "creation_date": "02/08/2021"
+    }
+  ]
+}
