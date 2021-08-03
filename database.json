@@ -1,8 +1,8 @@
 {
   "users": [
     {
-      "username": "Yo",
-      "password": "Bro",
+      "username": "nimda",
+      "password": "nimda",
       "creation_date": "dd.mm.yyyy"
     },
     {
@@ -19,6 +19,21 @@
       "username": "ooyeH",
       "password": "yetaM",
       "creation_date": "02/08/2021"
+    },
+    {
+      "username": "GNItseT",
+      "password": "tahwemostseT",
+      "creation_date": "03/08/2021"
+    },
+    {
+      "username": "0.2.1v",
+      "password": "7gnitseT",
+      "creation_date": "03/08/2021"
+    },
+    {
+      "username": "gnihtemos",
+      "password": "1gnitset",
+      "creation_date": "03/08/2021"
     }
   ]
 }
