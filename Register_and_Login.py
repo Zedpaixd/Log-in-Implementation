@@ -45,7 +45,6 @@ def loadToMemory():
         usernames.append(account['username'])
         passwords.append(account['password'])
 
-    return usernames,passwords
 
 
 
