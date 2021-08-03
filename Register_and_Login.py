@@ -27,19 +27,25 @@ def clear():
 
 # Loads all encrypted accounts into memory
 
-usernames = []
-passwords = []
 
-with open('database.json', 'r') as users:
 
-    userAccounts = json.load(users)
+def loadToMemory():
 
-usernames = []
-passwords = []
+    with open('database.json', 'r') as users:
 
-for account in userAccounts['users']:
-    usernames.append(account['username'])
-    passwords.append(account['password'])
+        global userAccounts
+        userAccounts = json.load(users)
+
+    global usernames
+    usernames = []
+    global passwords
+    passwords = []
+
+    for account in userAccounts['users']:
+        usernames.append(account['username'])
+        passwords.append(account['password'])
+
+    return usernames,passwords
 
 
 
@@ -98,7 +104,6 @@ def similarityCheck(string1, string2):
 
 
 
-# Function to add the account to the database. Currently a .txt, to-do: json
 
 def addToDatabase(username,password):
 
@@ -143,28 +148,37 @@ def Register():
 
     passwordInput = "a"
     inUsername = False
+    digitOrSpChr = False
 
-    while ((len(passwordInput) < 4) or (similarityCheck(passwordInput,usernameInput) <= (len(passwordInput)/2)) or (inUsername == True)):
+    while ((len(passwordInput) < 4) or (similarityCheck(passwordInput,usernameInput) <= (len(passwordInput)/2)) or (inUsername == True) or (digitOrSpChr == False)):
         inUsername = False
+        digitOrSpChr == False
 
         clear()
         print("Your username is: {}".format(usernameInput))
-        print("For your passsword, please make sure the following criterias are met:\n- Your password must be longer than 4 characters\n- Your password must not be too similar to your username\n- Your password must not appear in your username\n")
+        print("For your passsword, please make sure the following criterias are met:\n- Your password must be longer than 4 characters\n- Your password must not be too similar to your username\n- Your password must not appear in your username\n- Your password must contain at least one digit or one special character ( `~!@#$%^&*() )\n")
         passwordInput = input("Input your password:")
 
         tempPasswordInput = passwordInput
         
+        for char in "1234567890!@#$%^&*()`~":
+            if char in passwordInput:
+                digitOrSpChr = True
+                break
+
+
         while len(tempPasswordInput) > len(passwordInput)/2:
             tempPasswordInput = tempPasswordInput[:len(tempPasswordInput)-1:]
             if (tempPasswordInput.lower() in usernameInput.lower()):
                 inUsername = True
 
-        if (len(usernameInput) < 4) or (similarityCheck(passwordInput,usernameInput) <= (len(passwordInput)/2) or (inUsername == True)):
+        if (len(usernameInput) < 4) or (similarityCheck(passwordInput,usernameInput) <= (len(passwordInput)/2) or (inUsername == True) or (digitOrSpChr == False)):
             print("Unfitting password.")
             sleep(2)
 
     clear()
     addToDatabase(usernameInput,passwordInput)
+    loadToMemory()
 
 
 
@@ -195,6 +209,8 @@ def LogIn():
 # The "main" of the program
 
 access = False
+loadToMemory()
+
 
 while (access != True):
 
