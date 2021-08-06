@@ -2,12 +2,71 @@ from os import system, name
 from time import sleep
 import json
 from datetime import date
-
-# TODO:
-# - Tkinter UI
-# - More password requirements, such as 1 special character
+import tkinter as gui
 
 
+
+
+def logInGui():
+    window.destroy()
+    logInGui = gui.Tk()
+    logInGui.geometry("500x500")
+
+    #Code goes here
+
+    logInGui.mainloop()
+    windowCreate()
+
+
+
+
+def registerGui():
+    window.destroy()
+    registerGui = gui.Tk()
+    registerGui.geometry("500x500")
+
+    #Code goes here
+
+    registerGui.mainloop()
+    windowCreate()
+
+
+
+
+
+
+def windowCreate():
+
+    global window
+    window = gui.Tk()
+    window.geometry("165x110")
+
+
+    logInButton = gui.Button(
+        text = "Log In",
+        width = 8,
+        height = 1,
+        bg = "grey",
+        fg = "white",
+        command = logInGui,
+        )
+    logInButton['font'] = "Cambria"
+    logInButton.grid(row=3, column=1, padx=40, pady=15)
+
+
+    registerButton = gui.Button(
+        text = "Register",
+        width = 8,
+        height = 1,
+        bg = "grey",
+        fg = "white",
+        command = registerGui,
+        )
+    registerButton['font'] = "Cambria"
+    registerButton.grid(row=6, column=1, padx=40, pady=0)
+
+
+    window.mainloop()
 
 
 
@@ -216,23 +275,25 @@ while (access != True):
     clear()
 
     
-    print("1 - register \n2 - log in") #Temporary, will use actual UI later via tkinter
+    windowCreate()
 
-    userInput = input()
-    clear()
+    #print("1 - register \n2 - log in") #Temporary, will use actual UI later via tkinter
 
-    if (userInput == str(1)):
-        Register()
+    #userInput = input()
+    #clear()
 
-    else:
-        access = LogIn()
-        if (access == False):
-            clear()
-            print ("Something you have entered is incorrect")
-            sleep(2)
-            clear()
+    #if (userInput == str(1)):
+    #    Register()
 
-        else:
-            print("Access Granted")
-            sleep(2)
-            clear()
+    #else:
+    #    access = LogIn()
+    #    if (access == False):
+    #        clear()
+    #        print ("Something you have entered is incorrect")
+    #        sleep(2)
+    #        clear()
+
+    #   else:
+    #        print("Access Granted")
+    #        sleep(2)
+    #        clear()
