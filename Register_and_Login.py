@@ -7,25 +7,125 @@ import tkinter as gui
 
 
 
-def logInGui():
-    window.destroy()
-    logInGui = gui.Tk()
-    logInGui.geometry("500x500")
+#TODO:
+#    Beautify code!!!!!!!
+#    accessGratendGui
+#    add email to account
+#    do the register bit
 
-    #Code goes here
+
+
+def accessGrantedGui():
+    pass
+
+
+def logInSubmit():
+ 
+    usernameInput=username.get()
+    passwordInput=password.get()
+
+    if (Encrypt(usernameInput) in usernames):
+        if (Decrypt(passwords[usernames.index(Encrypt(usernameInput))]) == passwordInput):
+            global access
+            access = True
+
+    if (access == True):
+        accessGrantedGui()
+        logInGui.destroy()
+
+    username.set("")
+    password.set("")
+
+    
+
+
+
+
+def logInGui():
+
+    window.destroy()
+
+    global logInGui
+    logInGui = gui.Tk()
+    logInGui.geometry("325x150")
+
+
+    global username
+    username=gui.StringVar()
+    global password
+    password=gui.StringVar()
+
+
+    usernameLabel = gui.Label(logInGui, 
+                           text = 'Username:', 
+                           font=('Cambria',12, 'bold'),  
+                           )
+  
+    usernameEntry = gui.Entry(logInGui, 
+                           textvariable = username, 
+                           font=('Cambria',12,'normal'),
+                           )
+  
+    usernameLabel.place(x = 15,
+                        y = 15,
+                        )
+
+    usernameEntry.place(x = 105,
+                        y = 15,
+                        )
+
+
+
+    passwordLabel = gui.Label(logInGui, 
+                            text = 'Password:', 
+                            font = ('Cambria',12,'bold'),  
+                            )
+
+    passwordEntry=gui.Entry(logInGui, 
+                          textvariable = password, 
+                          font = ('Cambria',12,'normal'), 
+                          show = '*',
+                          )
+  
+    passwordLabel.place(x = 15,
+                        y = 65,
+                        )
+
+    passwordEntry.place(x = 105,
+                        y = 65,
+                        )
+
+
+
+    submitButton=gui.Button(logInGui, 
+                       text = 'Submit', 
+                       command = logInSubmit,
+                       )
+
+    submitButton.place(x = 140,
+                       y = 105,
+                       )
+
 
     logInGui.mainloop()
-    windowCreate()
+
+
+    if (access == False):
+        windowCreate()
 
 
 
 
 def registerGui():
+
     window.destroy()
+
     registerGui = gui.Tk()
     registerGui.geometry("500x500")
 
+
     #Code goes here
+
 
     registerGui.mainloop()
     windowCreate()
@@ -50,8 +150,14 @@ def windowCreate():
         fg = "white",
         command = logInGui,
         )
+
     logInButton['font'] = "Cambria"
-    logInButton.grid(row=3, column=1, padx=40, pady=15)
+
+    logInButton.grid(row=3, 
+                     column=1, 
+                     padx=40, 
+                     pady=15,
+                     )
 
 
     registerButton = gui.Button(
@@ -62,8 +168,14 @@ def windowCreate():
         fg = "white",
         command = registerGui,
         )
+
     registerButton['font'] = "Cambria"
-    registerButton.grid(row=6, column=1, padx=40, pady=0)
+
+    registerButton.grid(row=6, 
+                        column=1, 
+                        padx=40, 
+                        pady=0,
+                        )
 
 
     window.mainloop()
@@ -240,60 +352,8 @@ def Register():
 
 
 
-# Function handling the log in process
 
-def LogIn():
-
-    access = False
-
-    usernameInput = input("Input your username: ")
-    clear()
-
-    passwordInput = input("Input your password: ")
-    clear()
-
-    if (Encrypt(usernameInput) in usernames):
-        if (Decrypt(passwords[usernames.index(Encrypt(usernameInput))]) == passwordInput):
-            access = True
-
-    return access
-
-
-
-
-
-
-
-# The "main" of the program
-
+global access
 access = False
 loadToMemory()
-
-
-while (access != True):
-
-    clear()
-
-    
-    windowCreate()
-
-    #print("1 - register \n2 - log in") #Temporary, will use actual UI later via tkinter
-
-    #userInput = input()
-    #clear()
-
-    #if (userInput == str(1)):
-    #    Register()
-
-    #else:
-    #    access = LogIn()
-    #    if (access == False):
-    #        clear()
-    #        print ("Something you have entered is incorrect")
-    #        sleep(2)
-    #        clear()
-
-    #   else:
-    #        print("Access Granted")
-    #        sleep(2)
-    #        clear()
+windowCreate()
