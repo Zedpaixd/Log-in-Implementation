@@ -13,10 +13,9 @@ import tkinter as gui
 #    add email to account
 #    do the register bit
 
-
-
 def accessGrantedGui():
     pass
+
 
 
 def logInSubmit():
@@ -36,13 +35,10 @@ def logInSubmit():
     username.set("")
     password.set("")
 
+
+
+def logIn():
     
-
-
-
-
-def logInGui():
-
     window.destroy()
 
     global logInGui
@@ -106,17 +102,16 @@ def logInGui():
                        y = 105,
                        )
 
-
+    
     logInGui.mainloop()
-
+   
 
     if (access == False):
         windowCreate()
 
 
 
-
-def registerGui():
+def register():
 
     window.destroy()
 
@@ -129,8 +124,6 @@ def registerGui():
 
     registerGui.mainloop()
     windowCreate()
-
-
 
 
 
@@ -148,7 +141,7 @@ def windowCreate():
         height = 1,
         bg = "grey",
         fg = "white",
-        command = logInGui,
+        command = logIn,
         )
 
     logInButton['font'] = "Cambria"
@@ -166,7 +159,7 @@ def windowCreate():
         height = 1,
         bg = "grey",
         fg = "white",
-        command = registerGui,
+        command = register,
         )
 
     registerButton['font'] = "Cambria"
