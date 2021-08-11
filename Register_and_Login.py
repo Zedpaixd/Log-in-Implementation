@@ -115,6 +115,7 @@ def registerSubmit():
  
     usernameInput=username.get()
     passwordInput=password.get()
+    emailInput=email.get()
 
     fittingAccount = True
 
@@ -147,13 +148,14 @@ def registerSubmit():
         fittingAccount = False
 
     if (fittingAccount == True):
-        addToDatabase(usernameInput,passwordInput)
+        addToDatabase(usernameInput,passwordInput,emailInput)
         loadToMemory()
 
     registerGui.destroy()
 
     username.set("")
     password.set("")
+    email.set("")
 
 
 
@@ -163,7 +165,7 @@ def register():
 
     global registerGui
     registerGui = gui.Tk()
-    registerGui.geometry("450x350")
+    registerGui.geometry("450x445")
 
     requirements = gui.Label(registerGui, text = "Username and password requirements:")
     requirements.config(font =("Cambria", 14))
@@ -192,6 +194,26 @@ def register():
 
 
 
+    global email
+
+    email=gui.StringVar()
+
+    emailLabel = gui.Label(registerGui, 
+                            text = 'Email:', 
+                            font = ('Cambria',12,'bold'))
+
+    emailEntry=gui.Entry(registerGui, 
+                          textvariable = email, 
+                          font = ('Cambria',12,'normal'))  
+  
+    emailLabel.place(x = 180,
+                     y = 145)
+
+    emailEntry.place(x = 130,
+                     y = 175)
+
+
+
     global username
 
     username=gui.StringVar()
@@ -205,10 +227,10 @@ def register():
                            font=('Cambria',12,'normal'))
   
     usernameLabel.place(x = 180,
-                        y = 145)
+                        y = 225)
 
     usernameEntry.place(x = 130,
-                        y = 175)
+                        y = 255)
 
 
 
@@ -224,12 +246,12 @@ def register():
                           textvariable = password, 
                           font = ('Cambria',12,'normal'), 
                           show = '*')
-  
+
     passwordLabel.place(x = 180,
-                        y = 225)
+                        y = 305)
 
     passwordEntry.place(x = 130,
-                        y = 255)
+                        y = 335)
 
 
 
@@ -240,7 +262,7 @@ def register():
                        command = registerSubmit)
 
     submitButton.place(x = 180,
-                       y = 300)
+                       y = 380)
 
 
     registerGui.mainloop()
@@ -250,12 +272,14 @@ def register():
 
 
 
-def addToDatabase(username,password):
+def addToDatabase(username,password,email):
 
     encryptedUsername = Encrypt(username)
     encryptedPassword = Encrypt(password)
+    encryptedEmail = Encrypt(email)
 
     tempAccount = {
+    "email":encryptedEmail,
     "username":encryptedUsername,
     "password":encryptedPassword,
     "creation_date":date.today().strftime("%d/%m/%Y")
@@ -328,6 +352,9 @@ def loadToMemory():
         global userAccounts
         userAccounts = json.load(users)
 
+    global emails
+    emails = []
+
     global usernames
     usernames = []
 
@@ -337,6 +364,7 @@ def loadToMemory():
     for account in userAccounts['users']:
         usernames.append(account['username'])
         passwords.append(account['password'])
+        emails.append(account['email'])
 
 
 
