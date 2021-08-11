@@ -112,10 +112,57 @@ def logIn():
 
 # ------------ R E G I S T R A T I O N  H A N D L I N G ------------
 
+def registerSubmit():
+ 
+    usernameInput=username.get()
+    passwordInput=password.get()
+
+    fittingAccount = True
+
+    # Handling username input and if it abides by the requirements of a username
+
+    if (len(usernameInput) <= 4 or Encrypt(usernameInput) in usernames):
+        print("Invalid username.") # Open window saying invalid username
+        fittingAccount = False
+
+    # Handling password input and making sure it fits the mandatory criterias
+
+    inUsername = False
+    digitOrSpChr = False
+
+    tempPasswordInput = passwordInput
+        
+    for char in "1234567890!@#$%^&*()`~":
+        if char in passwordInput:
+            digitOrSpChr = True
+            break
+
+
+    while len(tempPasswordInput) > len(passwordInput)/2:
+        tempPasswordInput = tempPasswordInput[:len(tempPasswordInput)-1:]
+        if (tempPasswordInput.lower() in usernameInput.lower()):
+            inUsername = True
+
+    if (len(usernameInput) < 4) or (similarityCheck(passwordInput,usernameInput) <= (len(passwordInput)/2) or (inUsername == True) or (digitOrSpChr == False)):
+        print("Unfitting password.") # Open window saying invalid password
+        fittingAccount = False
+
+    if (fittingAccount == True):
+        addToDatabase(usernameInput,passwordInput)
+        loadToMemory()
+
+    registerGui.destroy()
+
+    username.set("")
+    password.set("")
+
+
+
 def register():
 
     window.destroy()
 
+    global registerGui
     registerGui = gui.Tk()
     registerGui.geometry("450x350")
 
@@ -126,23 +173,24 @@ def register():
 
     r1 = gui.Label(registerGui, text = "- The username must be unique and longer than 4 characters")
     r1.config(font =("Cambria", 10))
-    r1.place(x = 15,
+    r1.place(x = 40,
              y = 45)
-
-    r2 = gui.Label(registerGui, text = "- The password must be at least 5 characters or longer")
-    r2.config(font =("Cambria", 10))
-    r2.place(x = 15,
-             y = 65)
 
     r2 = gui.Label(registerGui, text = "- The password must not appear in, nor be too similar to the username")
     r2.config(font =("Cambria", 10))
     r2.place(x = 15,
+             y = 65)
+
+    r3 = gui.Label(registerGui, text = "- The password must be at least 5 characters or longer")
+    r3.config(font =("Cambria", 10))
+    r3.place(x = 55,
              y = 85)
 
-    r3 = gui.Label(registerGui, text = "- The password must contain at least one digit or one special character")
-    r3.config(font =("Cambria", 10))
-    r3.place(x = 15,
+    r4 = gui.Label(registerGui, text = "- The password must contain one digit / one special character or more")
+    r4.config(font =("Cambria", 10))
+    r4.place(x = 16,
              y = 105)
+
 
 
     global username
@@ -162,6 +210,7 @@ def register():
 
     usernameEntry.place(x = 130,
                         y = 175)
+
 
 
     global password
@@ -184,11 +233,12 @@ def register():
                         y = 255)
 
 
+
     submitButton=gui.Button(registerGui, 
                        text = 'Submit',
                        height = 1, 
                        width = 9,
-                       command = register)
+                       command = registerSubmit)
 
     submitButton.place(x = 180,
                        y = 300)
