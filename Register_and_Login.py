@@ -117,10 +117,81 @@ def register():
     window.destroy()
 
     registerGui = gui.Tk()
-    registerGui.geometry("500x500")
+    registerGui.geometry("450x350")
+
+    requirements = gui.Label(registerGui, text = "Username and password requirements:")
+    requirements.config(font =("Cambria", 14))
+    requirements.place(x = 50,
+                       y = 10)
+
+    r1 = gui.Label(registerGui, text = "- The username must be unique and longer than 4 characters")
+    r1.config(font =("Cambria", 10))
+    r1.place(x = 15,
+             y = 45)
+
+    r2 = gui.Label(registerGui, text = "- The password must be at least 5 characters or longer")
+    r2.config(font =("Cambria", 10))
+    r2.place(x = 15,
+             y = 65)
+
+    r2 = gui.Label(registerGui, text = "- The password must not appear in, nor be too similar to the username")
+    r2.config(font =("Cambria", 10))
+    r2.place(x = 15,
+             y = 85)
+
+    r3 = gui.Label(registerGui, text = "- The password must contain at least one digit or one special character")
+    r3.config(font =("Cambria", 10))
+    r3.place(x = 15,
+             y = 105)
 
 
-    #Code goes here
+    global username
+
+    username=gui.StringVar()
+
+    usernameLabel = gui.Label(registerGui, 
+                           text = 'Username:', 
+                           font=('Cambria',12, 'bold'))
+  
+    usernameEntry = gui.Entry(registerGui, 
+                           textvariable = username, 
+                           font=('Cambria',12,'normal'))
+  
+    usernameLabel.place(x = 180,
+                        y = 145)
+
+    usernameEntry.place(x = 130,
+                        y = 175)
+
+
+    global password
+
+    password=gui.StringVar()
+
+    passwordLabel = gui.Label(registerGui, 
+                            text = 'Password:', 
+                            font = ('Cambria',12,'bold'))
+
+    passwordEntry=gui.Entry(registerGui, 
+                          textvariable = password, 
+                          font = ('Cambria',12,'normal'), 
+                          show = '*')
+  
+    passwordLabel.place(x = 180,
+                        y = 225)
+
+    passwordEntry.place(x = 130,
+                        y = 255)
+
+
+    submitButton=gui.Button(registerGui, 
+                       text = 'Submit',
+                       height = 1, 
+                       width = 9,
+                       command = register)
+
+    submitButton.place(x = 180,
+                       y = 300)
 
 
     registerGui.mainloop()
