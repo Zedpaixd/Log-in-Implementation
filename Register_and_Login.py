@@ -3,13 +3,12 @@ from time import sleep
 import json
 from datetime import date
 import tkinter as gui
+from tkinter import messagebox
 from Decryption import *
 from Encryption import *
 
 #TODO:
-#    accessGratendGui
 #    add email to account
-#    do the register bit
 
 
 
@@ -18,7 +17,7 @@ from Encryption import *
 # ------------ L O G I N  H A N D L I N G ------------
 
 def accessGrantedGui():
-    pass
+    messagebox.showinfo("Welcome in","Access Granted.")
 
 
 
@@ -122,7 +121,7 @@ def registerSubmit():
     # Handling username input and if it abides by the requirements of a username
 
     if (len(usernameInput) <= 4 or Encrypt(usernameInput) in usernames):
-        print("Invalid username.") # Open window saying invalid username
+        messagebox.showerror("","Unfitting Username") 
         fittingAccount = False
 
     # Handling password input and making sure it fits the mandatory criterias
@@ -144,7 +143,7 @@ def registerSubmit():
             inUsername = True
 
     if (len(usernameInput) < 4) or (similarityCheck(passwordInput,usernameInput) <= (len(passwordInput)/2) or (inUsername == True) or (digitOrSpChr == False)):
-        print("Unfitting password.") # Open window saying invalid password
+        messagebox.showerror("","Unfitting Password") 
         fittingAccount = False
 
     if (fittingAccount == True):
