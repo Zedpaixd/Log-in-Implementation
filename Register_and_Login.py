@@ -7,8 +7,6 @@ from tkinter import messagebox
 from Decryption import *
 from Encryption import *
 
-#TODO:
-#    add email to account
 
 
 
@@ -22,12 +20,13 @@ def accessGrantedGui():
 
 
 def logInSubmit():
- 
+
+    # Gets username and password from the input boxes
     usernameInput=username.get()
     passwordInput=password.get()
 
-    if (Encrypt(usernameInput) in usernames):
-        if (Decrypt(passwords[usernames.index(Encrypt(usernameInput))]) == passwordInput):
+    if (Encrypt(usernameInput) in usernames): # If inputted username in existing usernames
+        if (Decrypt(passwords[usernames.index(Encrypt(usernameInput))]) == passwordInput): # If inputted password matches the username's password
             global access
             access = True
 
@@ -49,7 +48,7 @@ def logIn():
     logInGui.geometry("325x150")
 
 
-
+    # Username text & input box
     global username
     username=gui.StringVar()
 
@@ -68,7 +67,7 @@ def logIn():
                         y = 15)
 
 
-
+    # Password text & input box
     global password
     password=gui.StringVar()
 
@@ -88,7 +87,7 @@ def logIn():
                         y = 65)
 
 
-
+    # Submit button
     submitButton=gui.Button(logInGui, 
                        text = 'Submit', 
                        command = logInSubmit)
@@ -113,6 +112,7 @@ def logIn():
 
 def registerSubmit():
  
+    # Gets username, password and email from the input boxes
     usernameInput=username.get()
     passwordInput=password.get()
     emailInput=email.get()
@@ -147,6 +147,18 @@ def registerSubmit():
         messagebox.showerror("","Unfitting Password") 
         fittingAccount = False
 
+
+    # Making sure the email follows the certain form: [text]@[text].[text]
+    if (("@" not in emailInput) or ("." not in emailInput) or (emailInput.index("@") > emailInput.rfind("."))):
+        messagebox.showerror("","Unfitting Email") 
+        fittingAccount = False
+
+    # Used an elif to make the code easier to read, sort of. Same thing from above
+    elif ((emailInput.index("@") == emailInput.rfind(".") - 1) or (emailInput.rfind(".") == len(emailInput)-1) or (emailInput.index("@") == 0) or (emailInput.count("@") > 1)):
+        messagebox.showerror("","Unfitting Email") 
+        fittingAccount = False
+
+
     if (fittingAccount == True):
         addToDatabase(usernameInput,passwordInput,emailInput)
         loadToMemory()
@@ -163,6 +175,7 @@ def register():
 
     window.destroy()
 
+    # Defining + placing window sizes and the UI elements
     global registerGui
     registerGui = gui.Tk()
     registerGui.geometry("450x445")
@@ -194,6 +207,7 @@ def register():
 
 
 
+    # Email input box
     global email
 
     email=gui.StringVar()
@@ -214,6 +228,7 @@ def register():
 
 
 
+    # Username input box
     global username
 
     username=gui.StringVar()
@@ -234,6 +249,7 @@ def register():
 
 
 
+    # Password input box
     global password
 
     password=gui.StringVar()
@@ -278,6 +294,7 @@ def addToDatabase(username,password,email):
     encryptedPassword = Encrypt(password)
     encryptedEmail = Encrypt(email)
 
+    # Creating a dictionary to "dump" into the json file
     tempAccount = {
     "email":encryptedEmail,
     "username":encryptedUsername,
@@ -285,8 +302,10 @@ def addToDatabase(username,password,email):
     "creation_date":date.today().strftime("%d/%m/%Y")
     }
     
+    #Adding the account to currently loaded accounts
     userAccounts['users'].append(tempAccount)
 
+    #Rewriting the DB to also include the newly added account 
     with open('database.json', 'w') as users:
         json.dump(userAccounts, users, indent=2)
 
@@ -298,6 +317,7 @@ def addToDatabase(username,password,email):
 
 def windowCreate():
 
+    # UI sizing and handling 
     global window
     window = gui.Tk()
     window.geometry("165x110")
@@ -348,6 +368,7 @@ def windowCreate():
 
 def loadToMemory():
 
+    # Opening the DB and reading the list of all dictionaries
     with open('database.json', 'r') as users:
         global userAccounts
         userAccounts = json.load(users)
@@ -361,6 +382,7 @@ def loadToMemory():
     global passwords
     passwords = []
 
+    # Making the split for each account, where usernames [0] is username for first account and so on..
     for account in userAccounts['users']:
         usernames.append(account['username'])
         passwords.append(account['password'])
@@ -372,32 +394,33 @@ def loadToMemory():
 
 # ------------ C H E C K I N G  S I M I L A R I T Y ------------
 
-def similarityCheck(string1, string2): # Similarity check using dynamic programming and a memoization table
+# Similarity check using dynamic programming and a memoization table. To not flood the code with comments, the explanation can be easily found online
+def similarityCheck(string1, string2): 
 
     size1 = len(string1)
     size2 = len(string2)
 
-    dp = [[0 for x in range(size2 + 1)] for x in range(size1 + 1)]
+    SimilarityTable = [[0 for x in range(size2 + 1)] for x in range(size1 + 1)]
 
     for i in range(size1 + 1):
 
         for j in range(size2 + 1):
             
             if i == 0:
-                dp[i][j] = j   
+                SimilarityTable[i][j] = j   
  
             elif j == 0:
-                dp[i][j] = i   
+                SimilarityTable[i][j] = i   
  
             elif string1[i-1] == string2[j-1]:
-                dp[i][j] = dp[i-1][j-1]
+                SimilarityTable[i][j] = SimilarityTable[i-1][j-1]
  
             else:
-                dp[i][j] = 1 + min(dp[i][j-1],      
-                                   dp[i-1][j],      
-                                   dp[i-1][j-1])    
+                SimilarityTable[i][j] = 1 + min(SimilarityTable[i][j-1],      
+                                                SimilarityTable[i-1][j],      
+                                                SimilarityTable[i-1][j-1])    
  
-    return dp[size1][size2]
+    return SimilarityTable[size1][size2]
 
 
 
@@ -409,64 +432,3 @@ global access
 access = False
 loadToMemory()
 windowCreate()
-
-
-
-
-
-
-
-
-
-
-
-
-# Function handling the registration process
-
-def Register():
-
-    # Handling username input and if it abides by the requirements of a username
-
-    usernameInput = "a"
-
-    while (len(usernameInput) <= 4 or Encrypt(usernameInput) in usernames):
-
-        print("For your username, please make sure that:\n- Your username is longer than 4 characters\n- It has not been used before by anyone else\n")
-        usernameInput = input("Input your username:")
-        if (len(usernameInput) <= 4 or Encrypt(usernameInput) in usernames):
-            print("Invalid username.")
-            sleep(2)
-
-    # Handling password input and making sure it fits the mandatory criterias
-
-    passwordInput = "a"
-    inUsername = False
-    digitOrSpChr = False
-
-    while ((len(passwordInput) < 4) or (similarityCheck(passwordInput,usernameInput) <= (len(passwordInput)/2)) or (inUsername == True) or (digitOrSpChr == False)):
-        inUsername = False
-        digitOrSpChr == False
-
-        print("Your username is: {}".format(usernameInput))
-        print("For your passsword, please make sure the following criterias are met:\n- Your password must be longer than 4 characters\n- Your password must not be too similar to your username\n- Your password must not appear in your username\n- Your password must contain at least one digit or one special character ( `~!@#$%^&*() )\n")
-        passwordInput = input("Input your password:")
-
-        tempPasswordInput = passwordInput
-        
-        for char in "1234567890!@#$%^&*()`~":
-            if char in passwordInput:
-                digitOrSpChr = True
-                break
-
-
-        while len(tempPasswordInput) > len(passwordInput)/2:
-            tempPasswordInput = tempPasswordInput[:len(tempPasswordInput)-1:]
-            if (tempPasswordInput.lower() in usernameInput.lower()):
-                inUsername = True
-
-        if (len(usernameInput) < 4) or (similarityCheck(passwordInput,usernameInput) <= (len(passwordInput)/2) or (inUsername == True) or (digitOrSpChr == False)):
-            print("Unfitting password.")
-            sleep(2)
-
-    addToDatabase(usernameInput,passwordInput)
-    loadToMemory()
