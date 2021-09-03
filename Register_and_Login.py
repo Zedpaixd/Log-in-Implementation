@@ -154,6 +154,7 @@ def registerSubmit():
 
     if(re.fullmatch(regex, emailInput)):
         fittingAccount = True
+
     else:
         fittingAccount = False
 
