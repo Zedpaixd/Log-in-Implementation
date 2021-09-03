@@ -6,7 +6,7 @@ import tkinter as gui
 from tkinter import messagebox
 from Decryption import *
 from Encryption import *
-
+import re
 
 
 
@@ -148,15 +148,23 @@ def registerSubmit():
         fittingAccount = False
 
 
+    regexMailCheck = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Z|a-z]{2,}\b'
+
     # Making sure the email follows the certain form: [text]@[text].[text]
-    if (("@" not in emailInput) or ("." not in emailInput) or (emailInput.index("@") > emailInput.rfind("."))):
-        messagebox.showerror("","Unfitting Email") 
+
+    if(re.fullmatch(regex, emailInput)):
+        fittingAccount = True
+    else:
         fittingAccount = False
 
+    #if (("@" not in emailInput) or ("." not in emailInput) or (emailInput.index("@") > emailInput.rfind("."))):
+    #    messagebox.showerror("","Unfitting Email") 
+    #    fittingAccount = False
+
     # Used an elif to make the code easier to read, sort of. Same thing from above
-    elif ((emailInput.index("@") == emailInput.rfind(".") - 1) or (emailInput.rfind(".") == len(emailInput)-1) or (emailInput.index("@") == 0) or (emailInput.count("@") > 1)):
-        messagebox.showerror("","Unfitting Email") 
-        fittingAccount = False
+    #elif ((emailInput.index("@") == emailInput.rfind(".") - 1) or (emailInput.rfind(".") == len(emailInput)-1) or (emailInput.index("@") == 0) or (emailInput.count("@") > 1)):
+    #    messagebox.showerror("","Unfitting Email") 
+    #    fittingAccount = False
 
 
     if (fittingAccount == True):
